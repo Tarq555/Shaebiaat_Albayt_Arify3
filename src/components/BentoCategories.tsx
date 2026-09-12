@@ -13,6 +13,9 @@ interface BentoCategoriesProps {
   onEditCategory?: (cat: Category) => void;
   onAddNewCategory?: () => void;
   onUpdateCategoryCover?: (cat: Category, newImageUrl: string) => void;
+  badgeAr?: string;
+  titleAr?: string;
+  subtitleAr?: string;
 }
 
 export const BentoCategories: React.FC<BentoCategoriesProps> = ({
@@ -23,7 +26,10 @@ export const BentoCategories: React.FC<BentoCategoriesProps> = ({
   isAdmin = false,
   onEditCategory,
   onAddNewCategory,
-  onUpdateCategoryCover
+  onUpdateCategoryCover,
+  badgeAr,
+  titleAr,
+  subtitleAr
 }) => {
   const isAr = lang === 'ar';
   const ArrowIcon = isAr ? ArrowLeft : ArrowRight;
@@ -59,14 +65,14 @@ export const BentoCategories: React.FC<BentoCategoriesProps> = ({
           <div className="space-y-2">
             <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#b8860b]">
               <Sparkles className="w-3.5 h-3.5 text-[#d4af37]" />
-              {isAr ? 'أقسام المطبخ اليمني التراثي' : 'Traditional Cuisine Categories'}
+              {isAr ? (badgeAr || 'أقسام المطبخ اليمني التراثي') : 'Traditional Cuisine Categories'}
             </span>
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#141414] tracking-tight font-heading">
-              {isAr ? 'روائع المائدة والولائم الشعبية' : 'Explore Our Traditional Specialties'}
+              {isAr ? (titleAr || 'روائع المائدة والولائم الشعبية') : 'Explore Our Traditional Specialties'}
             </h2>
-            <p className="text-sm sm:text-base text-stone-600 max-w-2xl">
+            <p className="text-sm sm:text-base text-stone-600 max-w-2xl font-body">
               {isAr
-                ? 'اضغط على أي قسم لعرض جميع أطباقه الشعبية والولائم، أو استبدل صورته بالسحب والإفلات مباشرة.'
+                ? (subtitleAr || 'اضغط على أي قسم لعرض جميع أطباقه الشعبية والولائم، أو استبدل صورته بالسحب والإفلات مباشرة.')
                 : 'Click any category to explore its signature heritage dishes, or drop a new cover photo in admin mode.'}
             </p>
           </div>

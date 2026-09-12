@@ -8,13 +8,15 @@ interface HeaderTopStripProps {
   onNavigate: (tab: 'home' | 'menu' | 'gallery' | 'contact') => void;
   onOpenReservation: () => void;
   restaurantInfo?: RestaurantInfoType;
+  showReservationButton?: boolean;
 }
 
 export const HeaderTopStrip: React.FC<HeaderTopStripProps> = ({
   lang,
   onNavigate,
   onOpenReservation,
-  restaurantInfo
+  restaurantInfo,
+  showReservationButton = false
 }) => {
   const isAr = lang === 'ar';
   const info = restaurantInfo || RESTAURANT_INFO;
@@ -81,12 +83,14 @@ export const HeaderTopStrip: React.FC<HeaderTopStripProps> = ({
             >
               {isAr ? 'المعرض' : 'Gallery'}
             </button>
-            <button
-              onClick={onOpenReservation}
-              className="hover:text-[#d4af37] px-1.5 py-0.5 rounded transition-colors cursor-pointer text-[#d4af37] font-bold"
-            >
-              {isAr ? 'حجز طاولة' : 'Reserve'}
-            </button>
+            {showReservationButton && (
+              <button
+                onClick={onOpenReservation}
+                className="hover:text-[#d4af37] px-1.5 py-0.5 rounded transition-colors cursor-pointer text-[#d4af37] font-bold"
+              >
+                {isAr ? 'حجز طاولة' : 'Reserve'}
+              </button>
+            )}
           </div>
 
           {/* Popular Dishes ticker */}

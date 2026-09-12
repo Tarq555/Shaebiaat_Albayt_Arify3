@@ -1172,14 +1172,36 @@ export const DEFAULT_SITE_SETTINGS: SiteDisplaySettings = {
   announcementTextEn: 'Welcome to Shaabiyat Al-Bait Al-Reefi - Exclusive Riyadh Flagship (Open 24/7 with Fresh Daily Meats)',
   exclusiveBranchNoticeAr: 'تنبيه: فرعنا الوحيد والحصري هو في الرياض فقط، وليس لدينا أي فروع أخرى خارج الرياض.',
   exclusiveBranchNoticeEn: 'Notice: Our sole exclusive location is in Riyadh only. We have no branches outside Riyadh.',
-  showDishesMenu: false, // Hidden by default per user request: "في المنيو اريدك ان تحذفه حاليا لاني طلبت منك ان تجعلني استطيع ان اضيف قائمة جاهزة مثل الصور او ملفات"
-  showMenuWarehouse: true, // Show uploaded menu warehouse pages by default
+  showDishesMenu: true, // المنيو الموحد بشكل قائمة الأصناف
+  showMenuWarehouse: false, // مستودع الصور متاح كخيار ثانوي
   readyMenuUrl: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1600&q=85',
   readyMenuTitleAr: 'بروشور الأصناف والأسعار',
   readyMenuTitleEn: 'Menu Catalog & Repository',
   enableReadyMenu: true,
   showHeaderTopStrip: false, // Quick links, popular dishes, location & hours top strip
-  showSignInButton: true // زر تسجيل الدخول (إمكانية إظهاره أو إخفائه)
+  showSignInButton: true, // زر تسجيل الدخول (إمكانية إظهاره أو إخفائه)
+  showReservationButton: false, // زر حجز جلسة عائلية أو ديوان مخفي حالياً كما طلب المستخدم، مع إمكانية إظهاره متى ما أراد
+  // النصوص الافتراضية
+  categoriesBadgeAr: 'أقسام المطبخ اليمني التراثي',
+  categoriesTitleAr: 'روائع المائدة والولائم الشعبية',
+  categoriesSubtitleAr: 'اضغط على أي قسم لعرض جميع أطباقه الشعبية والولائم، أو استبدل صورته بالسحب والإفلات مباشرة.',
+  menuTitleAr: 'المنيو وقائمة الأطباق الشعبية',
+  menuSubtitleAr: 'تصفح أشهى ولائم المندي، الفخاريات الحجرية، الصاجيات والمشروبات التراثية',
+  galleryBadgeAr: 'أجواء صرح البيت الريفي',
+  galleryTitleAr: 'معرض صور المطعم والأجواء',
+  gallerySubtitleAr: 'جولة بصرية في صرح شعبيات البيت الريفي، الجلسات العائلية الخاصة، وفنون تقديم الولائم الأصيلة',
+  videoBadgeAr: 'تغطية وثائقية سينمائية',
+  videoTitleAr: 'الفيديو السينمائي 4K',
+  videoSubtitleAr: 'شاهد عراقة الطهي على حطب السمر الطبيعي وتحضير الأواني الحجرية الفائرة',
+  faqBadgeAr: 'إجابات وافية',
+  faqTitleAr: 'الأسئلة الشائعة وإجاباتها',
+  faqSubtitleAr: 'كل ما يهمك معرفته حول خدماتنا، أوقات عملنا على مدار 24 ساعة، وحجز الولائم',
+  contactBadgeAr: 'التواصل والحجز المباشر',
+  contactTitleAr: 'تواصل معنا لحجز جلستك وضيافتك',
+  contactSubtitleAr: 'التواصل المباشر هو السبيل المعتمد للحجز والاستفسار وتجهيز ولائمكم في شعبيات البيت الريفي بالرياض.',
+  footerAboutAr: 'المقر الحصري والوحيد بالرياض لتقديم أشهى ولائم المندي على حطب السمر، الفحسة والسلتة بالمدرة الحجرية، كبدة الحاشي والتقاطيع، والمعصوب والعريكة الملكية على مدار 24 ساعة.',
+  footerCopyrightAr: 'جميع الحقوق محفوظة © شعبيات البيت الريفي بالرياض',
+  extraBoldText: false
 };
 
 export const DEFAULT_FAQS: FaqItem[] = [
@@ -1292,8 +1314,8 @@ export const DEFAULT_STORY_CONFIG = {
 export const DEFAULT_HOMEPAGE_SECTIONS: HomepageSectionConfig[] = [
   { id: 'hero', nameAr: 'صرح المطعم والواجهة والتعريف', nameEn: 'Flagship Landmark & Definition', enabled: true },
   { id: 'categories', nameAr: 'أقسام المطبخ والمأكولات', nameEn: 'Cuisine Categories', enabled: true },
-  { id: 'dishes', nameAr: 'روائع وتوصيات الشيف (الأطباق المميزة)', nameEn: 'Signature Dishes', enabled: false },
   { id: 'gallery', nameAr: 'معرض صور المطعم والأجواء', nameEn: 'Ambiance Gallery', enabled: true },
+  { id: 'dishes', nameAr: 'روائع وتوصيات الشيف (الأطباق المميزة)', nameEn: 'Signature Dishes', enabled: false },
   { id: 'video', nameAr: 'الفيديو السينمائي 4K', nameEn: 'Cinematic 4K Video', enabled: true },
   { id: 'faq', nameAr: 'الأسئلة الشائعة', nameEn: 'Frequently Asked Questions', enabled: true },
   { id: 'contact', nameAr: 'الموقع والتواصل في أسفل الصفحة', nameEn: 'Location & Contact Details', enabled: false }

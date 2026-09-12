@@ -170,6 +170,28 @@ export interface SiteDisplaySettings {
   enableTableMenuPage?: boolean; // Control existence of standalone Table Menu without photos
   showHeaderTopStrip?: boolean; // Control whether quick links, popular dishes, location & hours top bar is shown at the header
   showSignInButton?: boolean; // التحكم بإظهار أو إخفاء زر تسجيل الدخول
+  showReservationButton?: boolean; // خيار إظهار أو إخفاء زر حجز جلسة عائلية أو ديوان (مخفي حالياً، ويمكن إظهاره متى ما أراد المستخدم)
+  // تخصيص جميع نصوص وعناوين الموقع (عريض وعادي)
+  categoriesBadgeAr?: string;
+  categoriesTitleAr?: string;
+  categoriesSubtitleAr?: string;
+  menuTitleAr?: string;
+  menuSubtitleAr?: string;
+  galleryBadgeAr?: string;
+  galleryTitleAr?: string;
+  gallerySubtitleAr?: string;
+  videoBadgeAr?: string;
+  videoTitleAr?: string;
+  videoSubtitleAr?: string;
+  faqBadgeAr?: string;
+  faqTitleAr?: string;
+  faqSubtitleAr?: string;
+  contactBadgeAr?: string;
+  contactTitleAr?: string;
+  contactSubtitleAr?: string;
+  footerAboutAr?: string;
+  footerCopyrightAr?: string;
+  extraBoldText?: boolean;
 }
 
 export type HomepageSectionId = 'hero' | 'categories' | 'dishes' | 'gallery' | 'video' | 'faq' | 'contact';
@@ -239,4 +261,4 @@ export interface StoryConfig {
 
 export type Currency = 'SAR';
 
-export type AdminTab = 'warehouse' | 'faqs' | 'dishes' | 'categories' | 'photos' | 'videos' | 'hero' | 'display' | 'restaurant' | 'security' | 'reservations' | 'subscribers';
+export type AdminTab = 'texts' | 'warehouse' | 'faqs' | 'dishes' | 'categories' | 'photos' | 'videos' | 'hero' | 'display' | 'restaurant' | 'security' | 'reservations' | 'subscribers';

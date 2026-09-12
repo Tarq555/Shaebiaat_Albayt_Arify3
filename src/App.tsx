@@ -235,37 +235,43 @@ export const App: React.FC = () => {
       if (saved) {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed) && parsed.length > 0) {
-          const list: HomepageSectionConfig[] = parsed
+          let list: HomepageSectionConfig[] = parsed
             .filter((sec: any) => sec.id !== 'offers')
             .map((sec: HomepageSectionConfig) => {
               if (sec.id === 'contact') return { ...sec, enabled: false };
               // Dishes section removed from bottom of homepage as requested by user
               if (sec.id === 'dishes') return { ...sec, enabled: false };
+              // Ensure gallery is enabled directly as requested by user
+              if (sec.id === 'gallery') return { ...sec, enabled: true };
               return sec;
             });
-          if (!list.some(s => s.id === 'dishes')) {
-            const catIdx = list.findIndex(s => s.id === 'categories');
-            const dishesSec: HomepageSectionConfig = {
-              id: 'dishes',
-              nameAr: 'روائع وتوصيات الشيف (الأطباق المميزة)',
-              nameEn: 'Signature Dishes',
-              enabled: false
-            };
-            if (catIdx !== -1) {
-              list.splice(catIdx + 1, 0, dishesSec);
-            } else {
-              list.push(dishesSec);
-            }
+
+          // Ensure gallery appears directly under categories as requested
+          const catIdx = list.findIndex(s => s.id === 'categories');
+          const galIdx = list.findIndex(s => s.id === 'gallery');
+          if (catIdx !== -1 && galIdx !== -1 && galIdx !== catIdx + 1) {
+            const [galSec] = list.splice(galIdx, 1);
+            list.splice(catIdx + 1, 0, galSec);
+          } else if (catIdx !== -1 && galIdx === -1) {
+            list.splice(catIdx + 1, 0, {
+              id: 'gallery',
+              nameAr: 'معرض صور المطعم والأجواء',
+              nameEn: 'Ambiance Gallery',
+              enabled: true
+            });
           }
+
           return list;
         }
       }
     } catch (e) {
       console.error('Error loading homepage sections', e);
     }
-    return DEFAULT_HOMEPAGE_SECTIONS.map((sec) =>
-      sec.id === 'contact' || sec.id === 'dishes' ? { ...sec, enabled: false } : sec
-    );
+    return DEFAULT_HOMEPAGE_SECTIONS.map((sec) => {
+      if (sec.id === 'contact' || sec.id === 'dishes') return { ...sec, enabled: false };
+      if (sec.id === 'gallery') return { ...sec, enabled: true };
+      return sec;
+    });
   });
 
   const [isSectionReorderOpen, setIsSectionReorderOpen] = useState(false);
@@ -464,7 +470,12 @@ export const App: React.FC = () => {
 
   // Navigation handlers
   const handleNavigate = (tab: 'home' | 'menu' | 'offers' | 'gallery' | 'contact' | 'table-menu') => {
-    setActiveTab(tab);
+    // Unify table-menu with menu (as user requested)
+    if (tab === 'table-menu') {
+      setActiveTab('menu');
+    } else {
+      setActiveTab(tab);
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -783,6 +794,7 @@ export const App: React.FC = () => {
           onNavigate={handleNavigate}
           onOpenReservation={() => setIsReservationOpen(true)}
           restaurantInfo={restaurantInfo}
+          showReservationButton={siteSettings.showReservationButton}
         />
       )}
 
@@ -866,6 +878,9 @@ export const App: React.FC = () => {
                           onEditCategory={(cat) => setSelectedCategoryForModal(cat)}
                           onAddNewCategory={() => handleOpenAdminWithTab('categories')}
                           onUpdateCategoryCover={handleUpdateCategoryCover}
+                          badgeAr={siteSettings.categoriesBadgeAr}
+                          titleAr={siteSettings.categoriesTitleAr}
+                          subtitleAr={siteSettings.categoriesSubtitleAr}
                         />
                       );
                     case 'dishes':
@@ -889,6 +904,9 @@ export const App: React.FC = () => {
                         <GallerySection
                           lang={lang}
                           isAdmin={isAdminAuthenticated}
+                          badgeAr={siteSettings.galleryBadgeAr}
+                          titleAr={siteSettings.galleryTitleAr}
+                          subtitleAr={siteSettings.gallerySubtitleAr}
                         />
                       );
                     case 'video':
@@ -1005,13 +1023,21 @@ export const App: React.FC = () => {
               showMenuWarehouse={siteSettings.showMenuWarehouse}
               onOpenAdminWarehouse={() => handleOpenAdminWithTab('warehouse')}
               onBack={() => handleNavigate('home')}
+              titleAr={siteSettings.menuTitleAr}
+              subtitleAr={siteSettings.menuSubtitleAr}
             />
           </div>
         )}
 
         {activeTab === 'gallery' && (
           <div className="pt-4">
-            <GallerySection lang={lang} isAdmin={isAdminAuthenticated} />
+            <GallerySection
+              lang={lang}
+              isAdmin={isAdminAuthenticated}
+              badgeAr={siteSettings.galleryBadgeAr}
+              titleAr={siteSettings.galleryTitleAr}
+              subtitleAr={siteSettings.gallerySubtitleAr}
+            />
           </div>
         )}
 
@@ -1028,16 +1054,33 @@ export const App: React.FC = () => {
         )}
 
         {activeTab === 'table-menu' && (
-          <div className="py-2">
-            <TableMenuPage
+          <div className="py-2" id="menu-section">
+            <MenuSection
+              menuItems={menuItems}
+              selectedCategory={selectedCategory}
+              onSelectCategory={setSelectedCategory}
+              onSelectDish={(dish) => setSelectedDishForModal(dish)}
+              onQuickAddToCart={handleAddToCart}
+              cartItems={cartItems}
               lang={lang}
               currency={currency}
-              onReturnToHome={() => handleNavigate('home')}
               isAdmin={isAdminAuthenticated}
-              restaurantInfo={restaurantInfo}
-              siteSettings={siteSettings}
-              onUpdateSiteSettings={handleUpdateSiteSettings}
-              onQuickAddToCart={handleAddToCart}
+              onEditDishAdmin={(dish) => setLiveEditDish(dish)}
+              categories={categories}
+              catalogOnlyMode={siteSettings.catalogOnlyMode}
+              showPrices={siteSettings.showPrices}
+              showDiscountPrices={siteSettings.showDiscountPrices}
+              whatsappNumber={restaurantInfo.whatsapp}
+              onOpenReadyMenu={() => setIsReadyMenuOpen(true)}
+              enableReadyMenu={siteSettings.enableReadyMenu}
+              readyMenuTitle={lang === 'ar' ? siteSettings.readyMenuTitleAr : siteSettings.readyMenuTitleEn}
+              warehouseItems={warehouseItems}
+              showDishesMenu={true}
+              showMenuWarehouse={siteSettings.showMenuWarehouse}
+              onOpenAdminWarehouse={() => handleOpenAdminWithTab('warehouse')}
+              onBack={() => handleNavigate('home')}
+              titleAr={siteSettings.menuTitleAr}
+              subtitleAr={siteSettings.menuSubtitleAr}
             />
           </div>
         )}
@@ -1061,6 +1104,9 @@ export const App: React.FC = () => {
         currentMember={currentMember}
         restaurantInfo={restaurantInfo}
         showSignInButton={siteSettings.showSignInButton}
+        showReservationButton={siteSettings.showReservationButton}
+        footerAboutAr={siteSettings.footerAboutAr}
+        footerCopyrightAr={siteSettings.footerCopyrightAr}
       />
 
       {/* Slide-over Cart Drawer */}

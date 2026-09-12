@@ -123,9 +123,18 @@ const GALLERY_ITEMS: GalleryItem[] = [
 interface GallerySectionProps {
   lang: Language;
   isAdmin?: boolean;
+  badgeAr?: string;
+  titleAr?: string;
+  subtitleAr?: string;
 }
 
-export const GallerySection: React.FC<GallerySectionProps> = ({ lang, isAdmin = false }) => {
+export const GallerySection: React.FC<GallerySectionProps> = ({
+  lang,
+  isAdmin = false,
+  badgeAr,
+  titleAr,
+  subtitleAr
+}) => {
   const isAr = lang === 'ar';
   const [items, setItems] = useState<GalleryItem[]>(() => {
     try {
@@ -145,7 +154,7 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ lang, isAdmin = 
   // Admin Add / Edit Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<GalleryItem | null>(null);
-  const [titleAr, setTitleAr] = useState('');
+  const [formTitleAr, setFormTitleAr] = useState('');
   const [titleEn, setTitleEn] = useState('');
   const [descAr, setDescAr] = useState('');
   const [image, setImage] = useState('');
@@ -178,7 +187,7 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ lang, isAdmin = 
 
   const handleOpenAddModal = () => {
     setEditingItem(null);
-    setTitleAr('');
+    setFormTitleAr('');
     setTitleEn('');
     setDescAr('');
     setImage('');
@@ -189,7 +198,7 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ lang, isAdmin = 
   const handleOpenEdit = (item: GalleryItem, e: React.MouseEvent) => {
     e.stopPropagation();
     setEditingItem(item);
-    setTitleAr(item.titleAr);
+    setFormTitleAr(item.titleAr);
     setTitleEn(item.titleEn);
     setDescAr(item.descAr);
     setImage(item.image);
@@ -206,7 +215,7 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ lang, isAdmin = 
 
   const handleSaveModal = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!titleAr.trim() || !image.trim()) return;
+    if (!formTitleAr.trim() || !image.trim()) return;
 
     if (editingItem) {
       setItems(prev =>
@@ -214,8 +223,8 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ lang, isAdmin = 
           i.id === editingItem.id
             ? {
                 ...i,
-                titleAr: titleAr.trim(),
-                titleEn: titleEn.trim() || titleAr.trim(),
+                titleAr: formTitleAr.trim(),
+                titleEn: titleEn.trim() || formTitleAr.trim(),
                 descAr: descAr.trim(),
                 descEn: descAr.trim(),
                 image: image.trim(),
@@ -229,8 +238,8 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ lang, isAdmin = 
       const newItem: GalleryItem = {
         id: `g-${Date.now()}`,
         category: 'dishes',
-        titleAr: titleAr.trim(),
-        titleEn: titleEn.trim() || titleAr.trim(),
+        titleAr: formTitleAr.trim(),
+        titleEn: titleEn.trim() || formTitleAr.trim(),
         descAr: descAr.trim(),
         descEn: descAr.trim(),
         image: image.trim(),
@@ -250,14 +259,14 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ lang, isAdmin = 
         <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-10 space-y-3">
           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#d4af37]/15 text-[#b8860b] border border-[#d4af37]/30">
             <Sparkles className="w-3.5 h-3.5 text-[#d4af37]" />
-            {isAr ? 'عدسة البيت الريفي' : 'Photo Gallery'}
+            {isAr ? (badgeAr || 'عدسة البيت الريفي') : 'Photo Gallery'}
           </span>
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#141414] tracking-tight font-heading">
-            {isAr ? 'معرض صور المطعم والأجواء والولائم' : 'Restaurant Ambiance & Dishes Gallery'}
+            {isAr ? (titleAr || 'معرض صور المطعم والأجواء والولائم') : 'Restaurant Ambiance & Dishes Gallery'}
           </h2>
           <p className="text-sm sm:text-base text-stone-600 font-body">
             {isAr
-              ? 'جولة بصرية في صرح شعبيات البيت الريفي بالرياض: من نيران التنور الحية وأطباق الولائم الفاخرة، إلى خصوصية الجلسات العائلية والصالات الملكية.'
+              ? (subtitleAr || 'جولة بصرية في صرح شعبيات البيت الريفي بالرياض: من نيران التنور الحية وأطباق الولائم الفاخرة، إلى خصوصية الجلسات العائلية والصالات الملكية.')
               : 'A visual journey through our Riyadh landmark: from live tandoor fires and royal banquets to intimate family majlis.'}
           </p>
 
@@ -367,8 +376,8 @@ export const GallerySection: React.FC<GallerySectionProps> = ({ lang, isAdmin = 
                 <input
                   type="text"
                   required
-                  value={titleAr}
-                  onChange={(e) => setTitleAr(e.target.value)}
+                  value={formTitleAr}
+                  onChange={(e) => setFormTitleAr(e.target.value)}
                   placeholder="مثال: مضبي لحم بلدي على الحجارة الحارة"
                   className="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 focus:border-[#d4af37] focus:outline-hidden"
                 />

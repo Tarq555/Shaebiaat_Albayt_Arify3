@@ -15,6 +15,9 @@ interface FooterProps {
   currentMember?: MemberUser | null;
   restaurantInfo?: RestaurantInfoType;
   showSignInButton?: boolean;
+  showReservationButton?: boolean;
+  footerAboutAr?: string;
+  footerCopyrightAr?: string;
 }
 
 export const Footer: React.FC<FooterProps> = ({
@@ -27,7 +30,10 @@ export const Footer: React.FC<FooterProps> = ({
   onOpenAuthModal,
   currentMember,
   restaurantInfo,
-  showSignInButton = true
+  showSignInButton = true,
+  showReservationButton = false,
+  footerAboutAr,
+  footerCopyrightAr
 }) => {
   const isAr = lang === 'ar';
   const info = restaurantInfo || {
@@ -68,7 +74,7 @@ export const Footer: React.FC<FooterProps> = ({
 
             <p className="text-xs sm:text-sm text-stone-400 leading-relaxed font-body">
               {isAr
-                ? 'نقدم لكم أصالة المذاق اليمني المستوحى من عراقة صنعاء وحضرموت وعدن، بمكونات بلدية طازجة وطهي على الحطب والتنور الطيني.'
+                ? (footerAboutAr || 'نقدم لكم أصالة المذاق اليمني المستوحى من عراقة صنعاء وحضرموت وعدن، بمكونات بلدية طازجة وطهي على الحطب والتنور الطيني.')
                 : 'Honoring ancient Yemeni culinary arts with wood-fired smoking, stone-pot stews, and generous hospitality since 1984.'}
             </p>
 
@@ -189,28 +195,22 @@ export const Footer: React.FC<FooterProps> = ({
               </li>
               <li>
                 <button
-                  onClick={() => onNavigate('story')}
-                  className="hover:text-[#d4af37] transition-colors cursor-pointer"
-                >
-                  {isAr ? 'قصة المطبخ وأسرار الطهي' : 'Our Story & Kitchen'}
-                </button>
-              </li>
-              <li>
-                <button
                   onClick={() => onNavigate('contact')}
                   className="hover:text-[#d4af37] transition-colors cursor-pointer"
                 >
                   {isAr ? 'موقعنا في الرياض' : 'Location & Map (Riyadh)'}
                 </button>
               </li>
-              <li>
-                <button
-                  onClick={onOpenReservation}
-                  className="hover:text-[#d4af37] font-bold transition-colors cursor-pointer text-[#d4af37]"
-                >
-                  {isAr ? 'حجز جلسة عائلية أو ديوان 📅' : 'Book a Majlis Table 📅'}
-                </button>
-              </li>
+              {showReservationButton && (
+                <li>
+                  <button
+                    onClick={onOpenReservation}
+                    className="hover:text-[#d4af37] font-bold transition-colors cursor-pointer text-[#d4af37]"
+                  >
+                    {isAr ? 'حجز جلسة عائلية أو ديوان 📅' : 'Book a Majlis Table 📅'}
+                  </button>
+                </li>
+              )}
             </ul>
           </div>
 
@@ -268,7 +268,7 @@ export const Footer: React.FC<FooterProps> = ({
             className="select-none"
           >
             {isAr
-              ? `جميع الحقوق محفوظة © ${new Date().getFullYear()} شعبيات البيت الريفي - أصالة المذاق والضيافة اليمنية.`
+              ? (footerCopyrightAr || `جميع الحقوق محفوظة © ${new Date().getFullYear()} شعبيات البيت الريفي - أصالة المذاق والضيافة اليمنية.`)
               : `© ${new Date().getFullYear()} Shaabiyat Al-Bait Al-Reefi. All rights reserved.`}
           </p>
 

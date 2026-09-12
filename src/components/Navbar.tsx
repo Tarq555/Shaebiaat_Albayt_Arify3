@@ -62,10 +62,9 @@ export const Navbar: React.FC<NavbarProps> = ({
       : 'Hello, I would like to inquire and make a booking at Shaabiyat Al-Bait Al-Reefi in Riyadh'
   )}`;
 
-  const navItems: { id: 'home' | 'table-menu' | 'menu' | 'gallery' | 'contact'; labelAr: string; labelEn: string }[] = [
+  const navItems: { id: 'home' | 'menu' | 'gallery' | 'contact'; labelAr: string; labelEn: string }[] = [
     { id: 'home', labelAr: 'الرئيسية', labelEn: 'Home' },
-    { id: 'table-menu', labelAr: 'جدول المنيو', labelEn: 'Table Menu' },
-    { id: 'menu', labelAr: 'قائمة الأصناف', labelEn: 'Dishes' },
+    { id: 'menu', labelAr: 'المنيو', labelEn: 'Menu' },
     { id: 'gallery', labelAr: 'معرض الصور', labelEn: 'Gallery' },
     { id: 'contact', labelAr: 'تواصل معنا', labelEn: 'Contact Us' },
   ];

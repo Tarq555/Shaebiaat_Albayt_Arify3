@@ -26,6 +26,7 @@ import { AdminWarehouseTab } from './AdminWarehouseTab';
 import { AdminFaqTab } from './AdminFaqTab';
 import { AdminSubscribersTab } from './AdminSubscribersTab';
 import { AdminVideosTab } from './AdminVideosTab';
+import { AdminTextsTab } from './AdminTextsTab';
 import { DragDropImageUpload } from './DragDropImageUpload';
 
 export type { RestaurantInfoType };
@@ -859,6 +860,7 @@ export const AdminManagerModal: React.FC<AdminManagerModalProps> = ({
             { id: 'photos', labelAr: '🎨 صور الموقع والواجهات', labelEn: '🎨 Site Photos' },
             { id: 'videos', labelAr: '🎥 الفيديوهات السينمائية والتغطيات', labelEn: '🎥 Cinematic Videos' },
             { id: 'hero', labelAr: '✨ الواجهة والتعريف الشفاف', labelEn: '✨ Hero & Intro' },
+            { id: 'texts', labelAr: '✍️ تعديل نصوص وعناوين الموقع', labelEn: '✍️ All Texts & Headings' },
             { id: 'display', labelAr: '⚙️ التحكم في العرض والمنيو', labelEn: '⚙️ Display & Visibility' },
             { id: 'restaurant', labelAr: '🏢 بيانات المطعم والتواصل', labelEn: '🏢 Branch Settings' },
             { id: 'subscribers', labelAr: '👥 المشتركون في العروض والتسويق', labelEn: '👥 Subscribers & Leads' },
@@ -2243,6 +2245,31 @@ export const AdminManagerModal: React.FC<AdminManagerModalProps> = ({
             </div>
           )}
 
+          {/* TAB: ALL SITE TEXTS & HEADINGS MANAGEMENT */}
+          {activeTab === 'texts' && (
+            <AdminTextsTab
+              lang={lang}
+              heroConfig={heroState}
+              onUpdateHeroConfig={(c) => {
+                setHeroState(c);
+                if (onUpdateHeroConfig) onUpdateHeroConfig(c);
+                try {
+                  localStorage.setItem('al_bait_hero_config', JSON.stringify(c));
+                } catch {}
+              }}
+              siteSettings={siteState}
+              onUpdateSiteSettings={(s) => {
+                setSiteState(s);
+                if (onUpdateSiteSettings) onUpdateSiteSettings(s);
+                try {
+                  localStorage.setItem('al_bait_site_settings', JSON.stringify(s));
+                } catch {}
+              }}
+              restaurantInfo={restaurantInfo}
+              onUpdateRestaurantInfo={onUpdateRestaurantInfo}
+            />
+          )}
+
           {/* TAB: DISPLAY & CATALOG MODE SETTINGS */}
           {activeTab === 'display' && (
             <form onSubmit={handleSaveSiteSettings} className="space-y-6 bg-[#faf9f6] p-5 sm:p-6 rounded-2xl border border-stone-200">
@@ -2383,6 +2410,42 @@ export const AdminManagerModal: React.FC<AdminManagerModalProps> = ({
                     <span
                       className={`pointer-events-none inline-block h-6 w-6 transform rounded-full bg-white shadow-md ring-0 transition duration-200 ease-in-out ${
                         siteState.showDiscountPrices ? 'translate-x-5 rtl:-translate-x-5' : 'translate-x-0'
+                      }`}
+                    />
+                  </button>
+                </div>
+              </div>
+
+              {/* Setting: Show / Hide Majlis Reservation Button */}
+              <div className="p-4 sm:p-5 rounded-2xl bg-white border-2 border-stone-200 space-y-3">
+                <div className="flex items-center justify-between gap-4">
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <span className="font-bold text-sm text-[#141414] block">
+                        {isAr ? '📅 زر حجز جلسة عائلية أو ديوان' : 'Book Majlis / Family Session Button'}
+                      </span>
+                      <span className={`px-2 py-0.5 rounded-full text-[10px] font-extrabold ${siteState.showReservationButton ? 'bg-emerald-100 text-emerald-800' : 'bg-stone-200 text-stone-600'}`}>
+                        {siteState.showReservationButton ? (isAr ? 'مُفعّل وظاهر' : 'Visible') : (isAr ? 'مخفي حالياً' : 'Hidden')}
+                      </span>
+                    </div>
+                    <p className="text-xs text-stone-600">
+                      {isAr
+                        ? 'يمكنك إخفاء زر الحجز حالياً كما طلبت، وإظهاره متى ما أردت بضغطة واحدة ليظهر في الشريط العلوي والفوتر.'
+                        : 'Hide or show the Majlis & table reservation button in the header and footer anytime.'}
+                    </p>
+                  </div>
+
+                  <button
+                    type="button"
+                    id="toggle-reservation-btn"
+                    onClick={() => setSiteState({ ...siteState, showReservationButton: !siteState.showReservationButton })}
+                    className={`relative inline-flex h-7 w-12 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-hidden ${
+                      siteState.showReservationButton ? 'bg-[#141414]' : 'bg-stone-300'
+                    }`}
+                  >
+                    <span
+                      className={`pointer-events-none inline-block h-6 w-6 transform rounded-full bg-white shadow-md ring-0 transition duration-200 ease-in-out ${
+                        siteState.showReservationButton ? 'translate-x-5 rtl:-translate-x-5' : 'translate-x-0'
                       }`}
                     />
                   </button>

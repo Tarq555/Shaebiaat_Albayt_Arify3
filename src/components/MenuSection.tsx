@@ -33,6 +33,8 @@ interface MenuSectionProps {
   showMenuWarehouse?: boolean;
   onOpenAdminWarehouse?: () => void;
   onBack?: () => void;
+  titleAr?: string;
+  subtitleAr?: string;
 }
 
 export const MenuSection: React.FC<MenuSectionProps> = ({
@@ -58,7 +60,9 @@ export const MenuSection: React.FC<MenuSectionProps> = ({
   showDishesMenu = true,
   showMenuWarehouse = true,
   onOpenAdminWarehouse,
-  onBack
+  onBack,
+  titleAr,
+  subtitleAr
 }) => {
   const isAr = lang === 'ar';
   const ArrowIcon = isAr ? ArrowRight : ArrowLeft;
@@ -112,6 +116,20 @@ export const MenuSection: React.FC<MenuSectionProps> = ({
     <section id="menu-section" className="py-6 sm:py-10 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         
+        {/* Optional Section Title if configured */}
+        {titleAr && (
+          <div className="text-center space-y-1.5 pb-2">
+            <h2 className="text-2xl sm:text-3xl font-black text-[#141414] font-heading">
+              {titleAr}
+            </h2>
+            {subtitleAr && (
+              <p className="text-xs sm:text-sm text-stone-600 max-w-xl mx-auto">
+                {subtitleAr}
+              </p>
+            )}
+          </div>
+        )}
+
         {/* Navigation & Top Bar (Back Button + Mode Toggles) */}
         <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-stone-200">
           <div className="flex items-center gap-3">
@@ -139,7 +157,7 @@ export const MenuSection: React.FC<MenuSectionProps> = ({
                       : 'text-stone-600 hover:text-stone-900'
                   }`}
                 >
-                  {isAr ? 'قائمة الأصناف' : 'Dishes Menu'}
+                  {isAr ? 'المنيو' : 'Menu'}
                 </button>
                 <button
                   type="button"
