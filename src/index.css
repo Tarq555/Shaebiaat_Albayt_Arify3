@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-heading: 'Be Vietnam Pro', 'Cairo', sans-serif;
+    --font-arabic-calligraphy: 'Amiri', serif;
+    --font-body: 'Plus Jakarta Sans', 'Cairo', sans-serif;
+    --font-price: 'Work Sans', 'Cairo', sans-serif;
+  }
+
+  body {
+    font-family: var(--font-body);
+    background-color: #ffffff;
+    color: #141414;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+  }
+}
+
+.font-heading {
+  font-family: 'Be Vietnam Pro', 'Cairo', sans-serif;
+}
+
+.font-calligraphy {
+  font-family: 'Amiri', serif;
+}
+
+.font-body {
+  font-family: 'Plus Jakarta Sans', 'Cairo', sans-serif;
+}
+
+.font-price {
+  font-family: 'Work Sans', 'Cairo', sans-serif;
+}
+
+/* Custom scrollbar in White / Gold */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: #fbfaf8;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d4af37;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #b8860b;
+}
